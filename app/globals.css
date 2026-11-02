@@ -1678,6 +1678,18 @@ body {
   pointer-events: none;
 }
 
+.genesis-timeline-particles-canvas {
+  position: absolute;
+  top: -36px;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: calc(100% + 72px);
+  pointer-events: none;
+  z-index: 10;
+}
+
 .genesis-timeline-stage {
   position: relative;
   z-index: 2;
