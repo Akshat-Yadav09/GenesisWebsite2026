@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback } from "react";
-import Image from "next/image";
 import { FAQItem } from "../data/faqData";
 import { sounds } from "./sound";
 
@@ -9,14 +8,13 @@ interface FAQAccordionItemProps {
   item: FAQItem;
   isOpen: boolean;
   onToggle: () => void;
-  index: number;
+  index?: number;
 }
 
 export default function FAQAccordionItem({
   item,
   isOpen,
   onToggle,
-  index,
 }: FAQAccordionItemProps) {
   const handleClick = useCallback(() => {
     sounds.playClick();

@@ -6,7 +6,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="about-section relative w-full min-h-screen md:h-screen md:max-h-screen flex flex-col justify-start items-start overflow-hidden select-none bg-[#030015] flex-shrink-0"
+      className="about-section relative w-full min-h-screen flex flex-col justify-start items-start overflow-visible select-none bg-[#030015] flex-shrink-0"
     >
       {/* ── 1. LAYERED SCENIC BACKGROUND ─────────────────────── */}
       <div className="about-bg-layer absolute inset-0 pointer-events-none overflow-hidden">

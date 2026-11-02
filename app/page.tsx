@@ -26,7 +26,6 @@ const STARS = Array.from({ length: 90 }, (_, i) => ({
 
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobileViewport, setIsMobileViewport] = useState<boolean | null>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Character interactive animation states
@@ -43,15 +42,10 @@ export default function Home() {
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
-    const updateViewport = () => {
-      setIsMobileViewport(media.matches);
-      setIsMobileMenuOpen(false);
-    };
+    const handleMediaChange = () => setIsMobileMenuOpen(false);
+    media.addEventListener("change", handleMediaChange);
 
-    updateViewport();
-    media.addEventListener("change", updateViewport);
-
-    return () => media.removeEventListener("change", updateViewport);
+    return () => media.removeEventListener("change", handleMediaChange);
   }, []);
 
   useEffect(() => {
@@ -579,8 +573,7 @@ export default function Home() {
           </a>
 
           {/* Top-Center: Navigation Buttons (BROCHURE — PRIZE — SPONSORS) */}
-          {isMobileViewport === false && (
-          <nav className="hero-nav pointer-events-auto absolute md:left-1/2 md:-translate-x-1/2 top-0 mt-3 flex items-center justify-center gap-20 sm:gap-30 md:gap-40">
+          <nav className="hero-nav hidden md:flex pointer-events-auto absolute md:left-1/2 md:-translate-x-1/2 top-0 mt-3 items-center justify-center gap-20 sm:gap-30 md:gap-40">
             {/* 1. BROCHURE Button (Opens the Genesis Brochure PDF in a new tab) */}
             <a
               href="/brochure"
@@ -598,9 +591,14 @@ export default function Home() {
               />
             </a>
 
-            {/* 2. PRIZE Button (Visually restored per original Figma reference, nonfunctional) */}
-            <div
-              className="relative transition-transform duration-200 hover:scale-105 select-none cursor-default block"
+            {/* 2. PRIZE Button */}
+            <button
+              type="button"
+              onClick={() => {
+                sounds.playClick();
+                document.getElementById("prizepool")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="relative transition-all duration-200 hover:scale-108 active:scale-95 group focus:outline-none cursor-pointer block"
               aria-label="Prize Pool"
             >
               <Image
@@ -608,13 +606,18 @@ export default function Home() {
                 alt="PRIZE"
                 width={195}
                 height={46}
-                className="h-8 sm:h-9 md:h-11 w-auto object-contain drop-shadow-[0_4px_8px_rgba(234,179,8,0.35)]"
+                className="h-8 sm:h-9 md:h-11 w-auto object-contain drop-shadow-[0_4px_8px_rgba(234,179,8,0.35)] group-hover:drop-shadow-[0_0_16px_rgba(234,179,8,0.85)]"
               />
-            </div>
+            </button>
 
-            {/* 3. SPONSORS Button (Visually restored per original Figma reference, nonfunctional) */}
-            <div
-              className="relative transition-transform duration-200 hover:scale-105 select-none cursor-default block"
+            {/* 3. SPONSORS Button */}
+            <button
+              type="button"
+              onClick={() => {
+                sounds.playClick();
+                document.getElementById("sponsors")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="relative transition-all duration-200 hover:scale-108 active:scale-95 group focus:outline-none cursor-pointer block"
               aria-label="Sponsors"
             >
               <Image
@@ -622,16 +625,14 @@ export default function Home() {
                 alt="SPONSORS"
                 width={195}
                 height={44}
-                className="h-8 sm:h-9 md:h-11 w-auto object-contain drop-shadow-[0_4px_8px_rgba(34,197,94,0.35)]"
+                className="h-8 sm:h-9 md:h-11 w-auto object-contain drop-shadow-[0_4px_8px_rgba(34,197,94,0.35)] group-hover:drop-shadow-[0_0_16px_rgba(34,197,94,0.85)]"
               />
-            </div>
+            </button>
           </nav>
-          )}
 
-            {/* Top-Right: Mobile Menu Button */}
-          <div ref={mobileMenuRef} className="hero-controls pointer-events-auto absolute right-6 top-0 flex items-center gap-3 mt-3">
+          {/* Top-Right: Mobile Menu Button */}
+          <div ref={mobileMenuRef} className="hero-controls flex md:hidden pointer-events-auto absolute right-6 top-0 items-center gap-3 mt-3">
             {/* Menu Hamburger Button */}
-            {isMobileViewport === true && (
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen((open) => !open)}
@@ -646,9 +647,8 @@ export default function Home() {
                 <span />
               </span>
             </button>
-            )}
 
-            {isMobileViewport === true && isMobileMenuOpen && (
+            {isMobileMenuOpen && (
               <div id="hero-mobile-menu" className="hero-mobile-menu" role="menu" aria-label="Mobile navigation">
                 <a
                   href="/brochure"

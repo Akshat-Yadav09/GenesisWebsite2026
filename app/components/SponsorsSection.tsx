@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Image from "next/image";
 import { sounds } from "./sound";
 
@@ -51,106 +51,12 @@ const SPONSOR_CARDS: SponsorCardData[] = [
 ];
 
 export default function SponsorsSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const scroller = section?.closest<HTMLElement>("main");
-
-    if (!section || !scroller) return;
-
-    const cards = Array.from(
-      section.querySelectorAll<HTMLElement>(".genesis-sponsor-flip-card"),
-    );
-
-    if (!cards.length) return;
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const cardCenters = new Map<HTMLElement, number>();
-    let frame = 0;
-
-    const updateCards = () => {
-      if (reducedMotion.matches) {
-        cards.forEach((card) => card.classList.add("is-revealed"));
-        return;
-      }
-
-      const activationY = scroller.scrollTop + scroller.clientHeight * 0.58;
-
-      cards.forEach((card) => {
-        const center = cardCenters.get(card);
-        card.classList.toggle(
-          "is-revealed",
-          center !== undefined && activationY >= center,
-        );
-      });
-    };
-
-    const measureCards = () => {
-      const scrollerRect = scroller.getBoundingClientRect();
-      cardCenters.clear();
-
-      cards.forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        const isVisible = rect.width > 0 && rect.height > 0;
-
-        if (!isVisible) {
-          card.classList.remove("is-revealed");
-          return;
-        }
-
-        cardCenters.set(
-          card,
-          scroller.scrollTop + rect.top + rect.height / 2 - scrollerRect.top,
-        );
-      });
-
-      updateCards();
-    };
-
-    const scheduleUpdate = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        frame = 0;
-        updateCards();
-      });
-    };
-
-    const scheduleMeasure = () => {
-      if (frame) window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        frame = 0;
-        measureCards();
-      });
-    };
-
-    section.classList.add("genesis-sponsors-flip-ready");
-    scroller.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleMeasure, { passive: true });
-    reducedMotion.addEventListener("change", scheduleMeasure);
-
-    const resizeObserver = new ResizeObserver(scheduleMeasure);
-    resizeObserver.observe(section);
-    measureCards();
-
-    return () => {
-      section.classList.remove("genesis-sponsors-flip-ready");
-      cards.forEach((card) => card.classList.remove("is-revealed"));
-      scroller.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", scheduleMeasure);
-      reducedMotion.removeEventListener("change", scheduleMeasure);
-      resizeObserver.disconnect();
-      if (frame) window.cancelAnimationFrame(frame);
-    };
-  }, []);
-
   const handleCardHover = () => {
     sounds.playHover();
   };
 
   return (
     <section
-      ref={sectionRef}
       id="sponsors"
       className="genesis-sponsors relative w-screen min-h-screen flex flex-col items-center justify-between overflow-x-hidden overflow-y-visible select-none bg-[#030015] py-4 sm:py-6 md:py-8 px-3 sm:px-6 lg:px-8"
       style={{

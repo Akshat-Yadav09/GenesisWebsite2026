@@ -102,7 +102,7 @@ export default function PrizePoolSection() {
           </div>
 
           {/* ── UPPER ARENA: MAIN TOURNAMENT (PRIZES) ──────── */}
-          <div className="absolute left-[67px] top-[187px] width-[1315px] w-[1315px] h-[361px] z-20">
+          <div className="absolute left-[67px] top-[187px] w-[1315px] h-[361px] z-20">
             {/* Clean Blue Arena Frame (No red X, no duplicate baked-in badges) */}
             <img loading="lazy" decoding="async"
               src="/landing-pages/prize-pool/ui/arena-upper-frame.svg"
@@ -185,7 +185,7 @@ export default function PrizePoolSection() {
           </div>
 
           {/* ── LOWER ARENA: VR TRACK ──────── */}
-          <div className="absolute left-[95px] top-[598px] width-[1251px] w-[1251px] h-[397px] z-20">
+          <div className="absolute left-[95px] top-[598px] w-[1251px] h-[397px] z-20">
             {/* Clean Blue Arena Frame (No red X, no duplicate baked-in badges) */}
             <img loading="lazy" decoding="async"
               src="/landing-pages/prize-pool/ui/arena-lower-frame.svg"
