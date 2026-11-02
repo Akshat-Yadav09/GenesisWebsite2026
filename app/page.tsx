@@ -32,6 +32,9 @@ export default function Home() {
   const [coltRecoil, setColtRecoil] = useState(false);
   const [leonActive, setLeonActive] = useState(false);
   const [telescopeGlint, setTelescopeGlint] = useState(false);
+  const [telescopeRecoil, setTelescopeRecoil] = useState(false);
+  const [telescopeScouting, setTelescopeScouting] = useState(false);
+  const [telescopeHovered, setTelescopeHovered] = useState(false);
   const [balloonBounced, setBalloonBounced] = useState(false);
 
   // 3D Interactive Tilt & Container Refs (Zero React Re-render on Mouse Move!)
@@ -249,9 +252,32 @@ export default function Home() {
   };
 
   const handleTelescopeClick = () => {
-    sounds.playClick();
+    if (telescopeScouting) return;
+    sounds.playTelescopeScout();
     setTelescopeGlint(true);
-    setTimeout(() => setTelescopeGlint(false), 320);
+    setTelescopeRecoil(true);
+    setTelescopeScouting(true);
+
+    setTimeout(() => {
+      setTelescopeRecoil(false);
+    }, 420);
+
+    setTimeout(() => {
+      setTelescopeGlint(false);
+    }, 550);
+
+    // Smooth pan down to About section after telescope charges/locks coordinates
+    setTimeout(() => {
+      const aboutSection = document.getElementById("about");
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 280);
+
+    // Gracefully fade out the scouting HUD reticle once descending
+    setTimeout(() => {
+      setTelescopeScouting(false);
+    }, 1400);
   };
 
   const handleBalloonClick = () => {
@@ -276,8 +302,11 @@ export default function Home() {
       >
         {/* ── Scaled Widescreen Canvas Container ──────────────── */}
         <div 
-          className="relative w-full h-full overflow-hidden"
+          className={`relative w-full h-full overflow-hidden transition-transform duration-700 ease-out ${
+            telescopeScouting ? "scale-[1.04]" : "scale-100"
+          }`}
           style={{
+            transformOrigin: "25% 65%",
             background: "radial-gradient(ellipse at 50% 32%, #180946 0%, #0d0426 42%, #030014 100%)",
           }}
         >
@@ -908,15 +937,42 @@ export default function Home() {
         {/* 1. Left Telescope Turret (Grounded on the Deck & Console, Exactly as in Figma) */}
         <div 
           onClick={handleTelescopeClick}
-          className="hero-telescope absolute z-25 transition-transform duration-300 hover:scale-105 group gpu-accel cursor-pointer"
+          onMouseEnter={() => setTelescopeHovered(true)}
+          onMouseLeave={() => setTelescopeHovered(false)}
+          className={`hero-telescope absolute z-25 transition-all duration-300 hover:scale-105 group gpu-accel cursor-pointer ${
+            telescopeRecoil ? "telescope-firing" : ""
+          }`}
           style={{
             bottom: "16.5%",
             left: "0%",
             width: "clamp(220px, 20vw, 300px)",
             height: "auto",
           }}
-          title="Genesis Observatory Telescope - Click to Peek!"
+          title="Genesis Observatory Telescope - Click to Scout Ground Zero!"
+          aria-label="Genesis Observatory Telescope - Click to Scout Ground Zero"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleTelescopeClick();
+            }
+          }}
         >
+          {/* Cyber HUD Tooltip Badge */}
+          <div
+            className={`absolute -top-12 left-1/3 -translate-x-1/2 whitespace-nowrap px-3 py-1.5 rounded-lg bg-black/90 text-cyan-300 font-mono text-[11px] font-bold tracking-wider border border-cyan-400/60 shadow-[0_0_18px_rgba(6,182,212,0.5)] pointer-events-none transition-all duration-200 z-30 ${
+              telescopeHovered && !telescopeScouting ? "opacity-100 -translate-y-1 scale-100" : "opacity-0 translate-y-2 scale-95"
+            }`}
+          >
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping inline-block" />
+              <span>🔭 SCOUT GALAXY // CLICK TO PEEK</span>
+            </div>
+            {/* Tooltip caret pointing down to turret */}
+            <div className="absolute left-1/2 -bottom-1 -translate-x-1/2 w-2 h-2 bg-black rotate-45 border-r border-b border-cyan-400/60" />
+          </div>
+
           <div className="relative">
             <Image
               src="/landing-pages/home/props/glossy-blue-star-emblem-cannon-turret-1.webp"
@@ -925,11 +981,19 @@ export default function Home() {
               height={365}
               className="w-full h-auto object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]"
             />
+            {/* Focal lens flare */}
             {telescopeGlint && (
               <div 
-                className="absolute top-[32%] left-[58%] w-6 h-6 rounded-full bg-yellow-200 blur-xs animate-ping pointer-events-none"
-                style={{ boxShadow: "0 0 16px 6px rgba(251, 191, 36, 0.95)" }}
+                className="absolute top-[32%] left-[58%] w-8 h-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-200 blur-xs animate-ping pointer-events-none"
+                style={{ boxShadow: "0 0 20px 8px rgba(56, 189, 248, 0.95)" }}
               />
+            )}
+            {/* Optical muzzle beam projecting into space */}
+            {telescopeScouting && (
+              <div className="telescope-beam-active absolute top-[32%] left-[58%] pointer-events-none z-20">
+                <div className="w-8 h-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white blur-[2px] shadow-[0_0_24px_8px_rgba(56,189,248,1)]" />
+                <div className="absolute top-0 left-0 w-80 h-2.5 -rotate-[32deg] origin-left bg-gradient-to-r from-white via-cyan-400 to-transparent blur-[1px] opacity-90" />
+              </div>
             )}
           </div>
         </div>
@@ -1074,6 +1138,75 @@ export default function Home() {
           aria-label="Frequently Asked Questions"
         />
       </aside>}
+
+      {/* ── CINEMATIC OBSERVATORY VIEWPORT HUD OVERLAY ─────── */}
+      <div
+        className={`fixed inset-0 pointer-events-none z-50 transition-opacity duration-500 flex flex-col items-center justify-between p-6 sm:p-10 select-none ${
+          telescopeScouting ? "opacity-100" : "opacity-0"
+        }`}
+        aria-hidden="true"
+      >
+        {/* Optical Aperture Vignette */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at 50% 50%, transparent 42%, rgba(3, 0, 21, 0.45) 70%, rgba(3, 0, 21, 0.92) 100%)",
+            boxShadow: "inset 0 0 100px rgba(6, 182, 212, 0.25)",
+          }}
+        />
+
+        {/* Scanline Sweep */}
+        <div className="absolute inset-x-0 h-32 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent pointer-events-none animate-hud-scanline" />
+
+        {/* Top HUD Telemetry Banner */}
+        <div className="relative z-10 flex flex-col items-center gap-1 px-5 py-2.5 rounded-xl bg-black/85 backdrop-blur-md border border-cyan-400/50 text-cyan-300 font-mono text-xs shadow-[0_0_30px_rgba(6,182,212,0.45)]">
+          <div className="flex items-center gap-2 text-cyan-400 font-bold tracking-widest text-[11px] sm:text-[13px]">
+            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping inline-block" />
+            🔭 OBSERVATORY OPTICS // TARGET LOCKED
+          </div>
+          <div className="text-[10px] sm:text-[11px] text-cyan-200/90 tracking-wider uppercase font-semibold">
+            Target Sector: About Genesis • Initiating Descent...
+          </div>
+        </div>
+
+        {/* Center Optical Reticle / Crosshairs */}
+        <div className="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center pointer-events-none">
+          {/* Outer Rotating Compass Ring */}
+          <div className="absolute inset-0 animate-reticle-cw">
+            <svg viewBox="0 0 200 200" className="w-full h-full text-cyan-400/40">
+              <circle cx="100" cy="100" r="95" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 8" />
+              <circle cx="100" cy="100" r="85" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3 15" />
+            </svg>
+          </div>
+
+          {/* Inner Counter-Rotating Ring & Corner Targeting Brackets */}
+          <div className="absolute w-44 h-44 sm:w-56 sm:h-56 animate-reticle-ccw">
+            <svg viewBox="0 0 200 200" className="w-full h-full text-cyan-300/50">
+              <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="20 15 5 15" />
+              <path d="M 40 70 L 40 40 L 70 40" fill="none" stroke="currentColor" strokeWidth="3" />
+              <path d="M 160 70 L 160 40 L 130 40" fill="none" stroke="currentColor" strokeWidth="3" />
+              <path d="M 40 130 L 40 160 L 70 160" fill="none" stroke="currentColor" strokeWidth="3" />
+              <path d="M 160 130 L 160 160 L 130 160" fill="none" stroke="currentColor" strokeWidth="3" />
+            </svg>
+          </div>
+
+          {/* Center Crosshair Dot */}
+          <div className="relative flex items-center justify-center">
+            <div className="w-3 h-3 rounded-full bg-cyan-300 animate-pulse shadow-[0_0_12px_rgba(6,182,212,0.9)]" />
+            <div className="absolute w-12 h-0.5 bg-cyan-400/60" />
+            <div className="absolute w-0.5 h-12 bg-cyan-400/60" />
+          </div>
+        </div>
+
+        {/* Bottom Coordinates Readout */}
+        <div className="relative z-10 flex items-center gap-6 px-4 py-1.5 rounded-lg bg-black/75 backdrop-blur-sm border border-cyan-500/30 text-[10px] font-mono text-cyan-300/80 tracking-widest uppercase">
+          <span>RA 05h 35m</span>
+          <span className="text-cyan-400">●</span>
+          <span>DEC -05° 23&apos;</span>
+          <span className="text-cyan-400">●</span>
+          <span>MAG 1.25x</span>
+        </div>
+      </div>
     </main>
   );
 }

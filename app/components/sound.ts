@@ -247,6 +247,66 @@ class SoundManager {
       // fallback
     }
   }
+
+  public playTelescopeScout() {
+    if (this.muted) return;
+    try {
+      this.initCtx();
+      if (!this.ctx) return;
+
+      const now = this.ctx.currentTime;
+
+      // 1. Futuristic optic charge sweep (sweeps up from 360Hz to 1200Hz, then resolves)
+      const osc1 = this.ctx.createOscillator();
+      const gain1 = this.ctx.createGain();
+      osc1.type = "sine";
+      osc1.frequency.setValueAtTime(360, now);
+      osc1.frequency.exponentialRampToValueAtTime(1200, now + 0.18);
+      osc1.frequency.exponentialRampToValueAtTime(800, now + 0.45);
+
+      gain1.gain.setValueAtTime(0.12, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+      osc1.connect(gain1);
+      gain1.connect(this.ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.5);
+
+      // 2. Deep cosmic observatory mechanism hum
+      const osc2 = this.ctx.createOscillator();
+      const gain2 = this.ctx.createGain();
+      osc2.type = "triangle";
+      osc2.frequency.setValueAtTime(140, now);
+      osc2.frequency.exponentialRampToValueAtTime(280, now + 0.15);
+      osc2.frequency.exponentialRampToValueAtTime(70, now + 0.45);
+
+      gain2.gain.setValueAtTime(0.15, now);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+      osc2.connect(gain2);
+      gain2.connect(this.ctx.destination);
+      osc2.start(now);
+      osc2.stop(now + 0.45);
+
+      // 3. High-tech telemetry targeting chimes
+      [880, 1320].forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const chime = this.ctx.createOscillator();
+        const chimeGain = this.ctx.createGain();
+        const start = now + 0.08 + idx * 0.07;
+        chime.type = "sine";
+        chime.frequency.setValueAtTime(freq, start);
+        chimeGain.gain.setValueAtTime(0.06, start);
+        chimeGain.gain.exponentialRampToValueAtTime(0.001, start + 0.2);
+        chime.connect(chimeGain);
+        chimeGain.connect(this.ctx.destination);
+        chime.start(start);
+        chime.stop(start + 0.2);
+      });
+    } catch {
+      // AudioContext fallback
+    }
+  }
 }
 
 export const sounds = new SoundManager();
