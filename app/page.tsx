@@ -969,7 +969,7 @@ export default function Home() {
               style={{ fontFamily: "var(--font-lilita), sans-serif" }}
             >
               {/* Cyan pulsing beacon */}
-              <span className="relative flex h-2 w-2 flex-shrink-0 items-center justify-center">
+              <span className="relative flex h-2 w-2 flex-shrink-0 items-center justify-center translate-x-[4px] ml-1">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-60" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan-300 shadow-[0_0_6px_#22d3ee]" />
               </span>
