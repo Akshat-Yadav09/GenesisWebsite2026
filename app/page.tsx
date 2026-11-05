@@ -961,16 +961,17 @@ export default function Home() {
         >
           {/* Cyber HUD Tooltip Badge */}
           <div
-            className={`absolute -top-12 left-1/3 -translate-x-1/2 whitespace-nowrap px-3 py-1.5 rounded-lg bg-black/90 text-cyan-300 font-mono text-[11px] font-bold tracking-wider border border-cyan-400/60 shadow-[0_0_18px_rgba(6,182,212,0.5)] pointer-events-none transition-all duration-200 z-30 ${
+            className={`absolute -top-11 sm:-top-13 left-1 sm:left-3 max-w-[calc(100vw-24px)] px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-[#030015]/95 backdrop-blur-md border-2 border-cyan-400/80 text-cyan-300 shadow-[0_0_18px_rgba(6,182,212,0.55)] pointer-events-none transition-all duration-200 z-30 box-border ${
               telescopeHovered && !telescopeScouting ? "opacity-100 -translate-y-1 scale-100" : "opacity-0 translate-y-2 scale-95"
             }`}
+            style={{ fontFamily: "var(--font-lilita), sans-serif" }}
           >
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping inline-block" />
-              <span>🔭 SCOUT GALAXY // CLICK TO PEEK</span>
+            <div className="flex items-center gap-1.5 whitespace-nowrap text-[11px] sm:text-xs md:text-sm leading-none">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping inline-block flex-shrink-0" />
+              <span className="tracking-wide">🔭 SCOUT GALAXY • TAP TO PEEK</span>
             </div>
             {/* Tooltip caret pointing down to turret */}
-            <div className="absolute left-1/2 -bottom-1 -translate-x-1/2 w-2 h-2 bg-black rotate-45 border-r border-b border-cyan-400/60" />
+            <div className="absolute left-6 sm:left-10 -bottom-1.5 w-2.5 h-2.5 bg-[#030015] rotate-45 border-r-2 border-b-2 border-cyan-400/80" />
           </div>
 
           <div className="relative">
@@ -1134,7 +1135,7 @@ export default function Home() {
 
       {/* ── CINEMATIC OBSERVATORY VIEWPORT HUD OVERLAY ─────── */}
       <div
-        className={`fixed inset-0 pointer-events-none z-50 transition-opacity duration-500 flex flex-col items-center justify-between p-6 sm:p-10 select-none ${
+        className={`fixed inset-0 pointer-events-none z-50 transition-opacity duration-500 flex flex-col items-center justify-between pt-16 pb-6 px-3 sm:pt-10 sm:pb-8 sm:px-6 select-none ${
           telescopeScouting ? "opacity-100" : "opacity-0"
         }`}
         aria-hidden="true"
@@ -1152,18 +1153,21 @@ export default function Home() {
         <div className="absolute inset-x-0 h-32 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent pointer-events-none animate-hud-scanline" />
 
         {/* Top HUD Telemetry Banner */}
-        <div className="relative z-10 flex flex-col items-center gap-1 px-5 py-2.5 rounded-xl bg-black/85 backdrop-blur-md border border-cyan-400/50 text-cyan-300 font-mono text-xs shadow-[0_0_30px_rgba(6,182,212,0.45)]">
-          <div className="flex items-center gap-2 text-cyan-400 font-bold tracking-widest text-[11px] sm:text-[13px]">
-            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping inline-block" />
-            🔭 OBSERVATORY OPTICS // TARGET LOCKED
+        <div 
+          className="relative z-10 w-full max-w-[92vw] sm:max-w-md mx-auto flex flex-col items-center gap-1 sm:gap-1.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-[#030015]/95 backdrop-blur-md border-2 border-cyan-400/80 text-center shadow-[0_0_35px_rgba(6,182,212,0.5)] box-border"
+          style={{ fontFamily: "var(--font-lilita), sans-serif" }}
+        >
+          <div className="flex items-center justify-center gap-2 text-cyan-300 text-xs sm:text-base tracking-wide leading-snug">
+            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping inline-block flex-shrink-0" />
+            <span>🔭 OBSERVATORY OPTICS • TARGET LOCKED</span>
           </div>
-          <div className="text-[10px] sm:text-[11px] text-cyan-200/90 tracking-wider uppercase font-semibold">
+          <div className="text-[11px] sm:text-xs text-sky-200/90 tracking-wide uppercase leading-snug">
             Target Sector: About Genesis • Initiating Descent...
           </div>
         </div>
 
         {/* Center Optical Reticle / Crosshairs */}
-        <div className="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center pointer-events-none">
+        <div className="relative w-48 h-48 sm:w-72 sm:h-72 flex items-center justify-center pointer-events-none my-auto">
           {/* Outer Rotating Compass Ring */}
           <div className="absolute inset-0 animate-reticle-cw">
             <svg viewBox="0 0 200 200" className="w-full h-full text-cyan-400/40">
@@ -1173,7 +1177,7 @@ export default function Home() {
           </div>
 
           {/* Inner Counter-Rotating Ring & Corner Targeting Brackets */}
-          <div className="absolute w-44 h-44 sm:w-56 sm:h-56 animate-reticle-ccw">
+          <div className="absolute w-36 h-36 sm:w-52 sm:h-52 animate-reticle-ccw">
             <svg viewBox="0 0 200 200" className="w-full h-full text-cyan-300/50">
               <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="20 15 5 15" />
               <path d="M 40 70 L 40 40 L 70 40" fill="none" stroke="currentColor" strokeWidth="3" />
@@ -1186,17 +1190,20 @@ export default function Home() {
           {/* Center Crosshair Dot */}
           <div className="relative flex items-center justify-center">
             <div className="w-3 h-3 rounded-full bg-cyan-300 animate-pulse shadow-[0_0_12px_rgba(6,182,212,0.9)]" />
-            <div className="absolute w-12 h-0.5 bg-cyan-400/60" />
-            <div className="absolute w-0.5 h-12 bg-cyan-400/60" />
+            <div className="absolute w-10 sm:w-12 h-0.5 bg-cyan-400/60" />
+            <div className="absolute w-0.5 h-10 sm:h-12 bg-cyan-400/60" />
           </div>
         </div>
 
         {/* Bottom Coordinates Readout */}
-        <div className="relative z-10 flex items-center gap-6 px-4 py-1.5 rounded-lg bg-black/75 backdrop-blur-sm border border-cyan-500/30 text-[10px] font-mono text-cyan-300/80 tracking-widest uppercase">
+        <div 
+          className="relative z-10 max-w-[92vw] mx-auto flex flex-wrap items-center justify-center gap-2.5 sm:gap-6 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-xl bg-[#030015]/85 backdrop-blur-sm border border-cyan-500/40 text-[10px] sm:text-xs text-cyan-300/90 tracking-wide uppercase shadow-[0_0_15px_rgba(6,182,212,0.25)] box-border"
+          style={{ fontFamily: "var(--font-lilita), sans-serif" }}
+        >
           <span>RA 05h 35m</span>
-          <span className="text-cyan-400">●</span>
+          <span className="text-cyan-400 text-[9px] sm:text-[10px]">●</span>
           <span>DEC -05° 23&apos;</span>
-          <span className="text-cyan-400">●</span>
+          <span className="text-cyan-400 text-[9px] sm:text-[10px]">●</span>
           <span>MAG 1.25x</span>
         </div>
       </div>
