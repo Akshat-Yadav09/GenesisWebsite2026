@@ -960,24 +960,36 @@ export default function Home() {
         >
           {/* Cyber HUD Tooltip Badge */}
           <div
-            className={`absolute -top-9 sm:-top-11 left-2 sm:left-6 max-w-[calc(100vw-24px)] px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#030015]/95 backdrop-blur-md border border-cyan-400/70 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.45)] pointer-events-none transition-all duration-200 z-30 box-border ${
+            className={`absolute -top-8 sm:-top-10 left-3 sm:left-6 max-w-[calc(100vw-24px)] pointer-events-none transition-all duration-200 z-30 select-none ${
               telescopeHovered && !telescopeScouting ? "opacity-100 -translate-y-1 scale-100" : "opacity-0 translate-y-1 scale-95"
             }`}
-            style={{ fontFamily: "var(--font-lilita), sans-serif" }}
           >
-            <div className="flex items-center gap-1.5 whitespace-nowrap leading-tight">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping inline-block flex-shrink-0" />
-              <span className="text-[12px] sm:text-[13px] leading-none select-none">🔭</span>
-              <span className="text-[10px] sm:text-[11px] tracking-wide text-cyan-300 font-normal">
+            <div
+              className="inline-flex items-center gap-2 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[#030015]/95 backdrop-blur-md border border-cyan-400/80 text-cyan-300 shadow-[0_0_16px_rgba(6,182,212,0.45)] whitespace-nowrap box-border"
+              style={{ fontFamily: "var(--font-lilita), sans-serif" }}
+            >
+              {/* Cyan pulsing beacon */}
+              <span className="relative flex h-2 w-2 flex-shrink-0 items-center justify-center">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan-300 shadow-[0_0_6px_#22d3ee]" />
+              </span>
+
+              {/* Telescope Icon */}
+              <span className="text-[11px] leading-none select-none">🔭</span>
+
+              {/* Label */}
+              <span className="text-[9px] sm:text-[9.5px] text-cyan-300 font-normal tracking-wider translate-y-[0.5px]">
                 SCOUT GALAXY
               </span>
-              <span className="w-1 h-1 rounded-full bg-cyan-400/60" />
-              <span className="text-[9px] sm:text-[10px] tracking-wide text-cyan-200/80 font-normal uppercase">
+
+              {/* Divider dot */}
+              <span className="text-cyan-500/60 text-[8px] font-sans">•</span>
+
+              {/* Action hint */}
+              <span className="text-[8px] sm:text-[8.5px] text-cyan-200/90 font-normal tracking-widest uppercase translate-y-[0.5px]">
                 PEEK
               </span>
             </div>
-            {/* Tooltip caret pointing down to turret */}
-            <div className="absolute left-6 sm:left-8 -bottom-1 w-2 h-2 bg-[#030015] rotate-45 border-r border-b border-cyan-400/70" />
           </div>
 
           <div className="relative">
