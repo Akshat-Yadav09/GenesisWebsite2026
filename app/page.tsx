@@ -948,7 +948,6 @@ export default function Home() {
             width: "clamp(220px, 20vw, 300px)",
             height: "auto",
           }}
-          title="Genesis Observatory Telescope - Click to Scout Ground Zero!"
           aria-label="Genesis Observatory Telescope - Click to Scout Ground Zero"
           role="button"
           tabIndex={0}
@@ -961,17 +960,24 @@ export default function Home() {
         >
           {/* Cyber HUD Tooltip Badge */}
           <div
-            className={`absolute -top-11 sm:-top-13 left-1 sm:left-3 max-w-[calc(100vw-24px)] px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-[#030015]/95 backdrop-blur-md border-2 border-cyan-400/80 text-cyan-300 shadow-[0_0_18px_rgba(6,182,212,0.55)] pointer-events-none transition-all duration-200 z-30 box-border ${
-              telescopeHovered && !telescopeScouting ? "opacity-100 -translate-y-1 scale-100" : "opacity-0 translate-y-2 scale-95"
+            className={`absolute -top-9 sm:-top-11 left-2 sm:left-6 max-w-[calc(100vw-24px)] px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#030015]/95 backdrop-blur-md border border-cyan-400/70 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.45)] pointer-events-none transition-all duration-200 z-30 box-border ${
+              telescopeHovered && !telescopeScouting ? "opacity-100 -translate-y-1 scale-100" : "opacity-0 translate-y-1 scale-95"
             }`}
             style={{ fontFamily: "var(--font-lilita), sans-serif" }}
           >
-            <div className="flex items-center gap-1.5 whitespace-nowrap text-[11px] sm:text-xs md:text-sm leading-none">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping inline-block flex-shrink-0" />
-              <span className="tracking-wide">🔭 SCOUT GALAXY • TAP TO PEEK</span>
+            <div className="flex items-center gap-1.5 whitespace-nowrap leading-tight">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping inline-block flex-shrink-0" />
+              <span className="text-[12px] sm:text-[13px] leading-none select-none">🔭</span>
+              <span className="text-[10px] sm:text-[11px] tracking-wide text-cyan-300 font-normal">
+                SCOUT GALAXY
+              </span>
+              <span className="w-1 h-1 rounded-full bg-cyan-400/60" />
+              <span className="text-[9px] sm:text-[10px] tracking-wide text-cyan-200/80 font-normal uppercase">
+                PEEK
+              </span>
             </div>
             {/* Tooltip caret pointing down to turret */}
-            <div className="absolute left-6 sm:left-10 -bottom-1.5 w-2.5 h-2.5 bg-[#030015] rotate-45 border-r-2 border-b-2 border-cyan-400/80" />
+            <div className="absolute left-6 sm:left-8 -bottom-1 w-2 h-2 bg-[#030015] rotate-45 border-r border-b border-cyan-400/70" />
           </div>
 
           <div className="relative">
@@ -1157,11 +1163,11 @@ export default function Home() {
           className="relative z-10 w-full max-w-[92vw] sm:max-w-md mx-auto flex flex-col items-center gap-1 sm:gap-1.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-[#030015]/95 backdrop-blur-md border-2 border-cyan-400/80 text-center shadow-[0_0_35px_rgba(6,182,212,0.5)] box-border"
           style={{ fontFamily: "var(--font-lilita), sans-serif" }}
         >
-          <div className="flex items-center justify-center gap-2 text-cyan-300 text-xs sm:text-base tracking-wide leading-snug">
-            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping inline-block flex-shrink-0" />
+          <div className="flex items-center justify-center gap-2 text-cyan-300 text-xs sm:text-sm md:text-[15px] tracking-wide leading-snug">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping inline-block flex-shrink-0" />
             <span>🔭 OBSERVATORY OPTICS • TARGET LOCKED</span>
           </div>
-          <div className="text-[11px] sm:text-xs text-sky-200/90 tracking-wide uppercase leading-snug">
+          <div className="text-[10px] sm:text-xs text-sky-200/90 tracking-wide uppercase leading-snug">
             Target Sector: About Genesis • Initiating Descent...
           </div>
         </div>
