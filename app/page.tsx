@@ -986,7 +986,7 @@ export default function Home() {
               <span className="text-cyan-500/60 text-[8px] font-sans">•</span>
 
               {/* Action hint */}
-              <span className="text-[8px] sm:text-[8.5px] text-cyan-200/90 font-normal tracking-widest uppercase translate-y-[0.5px]">
+              <span className="text-[8px] sm:text-[8.5px] text-cyan-200/90 font-normal tracking-widest uppercase translate-y-[0.5px] -translate-x-[4px] mr-1">
                 PEEK
               </span>
             </div>
