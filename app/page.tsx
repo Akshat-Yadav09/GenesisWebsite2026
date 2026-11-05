@@ -981,19 +981,12 @@ export default function Home() {
               height={365}
               className="w-full h-auto object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.7)]"
             />
-            {/* Focal lens flare */}
+            {/* Focal lens glint */}
             {telescopeGlint && (
               <div 
-                className="absolute top-[32%] left-[58%] w-8 h-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-200 blur-xs animate-ping pointer-events-none"
-                style={{ boxShadow: "0 0 20px 8px rgba(56, 189, 248, 0.95)" }}
+                className="absolute top-[32%] left-[58%] w-6 h-6 rounded-full bg-yellow-200 blur-xs animate-ping pointer-events-none"
+                style={{ boxShadow: "0 0 16px 6px rgba(251, 191, 36, 0.95)" }}
               />
-            )}
-            {/* Optical muzzle beam projecting into space */}
-            {telescopeScouting && (
-              <div className="telescope-beam-active absolute top-[32%] left-[58%] pointer-events-none z-20">
-                <div className="w-8 h-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white blur-[2px] shadow-[0_0_24px_8px_rgba(56,189,248,1)]" />
-                <div className="absolute top-0 left-0 w-80 h-2.5 -rotate-[32deg] origin-left bg-gradient-to-r from-white via-cyan-400 to-transparent blur-[1px] opacity-90" />
-              </div>
             )}
           </div>
         </div>
